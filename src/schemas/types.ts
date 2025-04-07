@@ -6,7 +6,7 @@ export interface CalendarListEntry {
 }
 
 export interface CalendarEventReminder {
-  method: 'email' | 'popup';
+  method: "email" | "popup";
   minutes: number;
 }
 
@@ -36,4 +36,31 @@ export interface CalendarEvent {
     overrides?: CalendarEventReminder[];
   };
   recurrence?: string[] | null;
-} 
+}
+
+// TypeScript interfaces for Google Tasks data structures
+
+export interface TaskList {
+  id?: string | null;
+  title?: string | null;
+  updated?: string | null;
+  selfLink?: string | null;
+}
+
+export interface Task {
+  id?: string | null;
+  title?: string | null;
+  notes?: string | null;
+  status?: "needsAction" | "completed" | null;
+  due?: string | null;
+  completed?: string | null;
+  deleted?: boolean | null;
+  hidden?: boolean | null;
+  links?: Array<{
+    type?: string | null;
+    description?: string | null;
+    link?: string | null;
+  }> | null;
+  parent?: string | null;
+  position?: string | null;
+}

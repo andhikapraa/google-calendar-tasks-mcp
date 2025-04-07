@@ -1,8 +1,8 @@
-import express from 'express';
-import { OAuth2Client } from 'google-auth-library';
-import { TokenManager } from './tokenManager.js';
-import http from 'http';
-import url from 'url';
+import express from "express";
+import { OAuth2Client } from "google-auth-library";
+import { TokenManager } from "./tokenManager.js";
+import http from "http";
+import url from "url";
 
 export class AuthServer {
   private oauth2Client: OAuth2Client;
@@ -18,71 +18,84 @@ export class AuthServer {
   }
 
   private setupRoutes(): void {
-    this.app.get('/', (req, res) => {
-      const scopes = ['https://www.googleapis.com/auth/calendar'];
+    this.app.get("/", (req, res) => {
+      const scopes = [
+        "https://www.googleapis.com/auth/calendar",
+        "https://www.googleapis.com/auth/tasks",
+      ];
       const authUrl = this.oauth2Client.generateAuthUrl({
-        access_type: 'offline',
+        access_type: "offline",
         scope: scopes,
-        prompt: 'consent' // Force consent screen for refresh token
+        prompt: "consent", // Force consent screen for refresh token
       });
-      res.send(`<h1>Google Calendar Authentication</h1><a href="${authUrl}">Authenticate with Google</a>`);
+      res.send(
+        `<h1>Google Calendar and Tasks Authentication</h1><a href="${authUrl}">Authenticate with Google</a>`
+      );
     });
 
-    this.app.get('/oauth2callback', async (req, res) => {
+    this.app.get("/oauth2callback", async (req, res) => {
       const code = req.query.code as string;
       if (!code) {
-        res.status(400).send('Authorization code missing');
+        res.status(400).send("Authorization code missing");
         return;
       }
       try {
         const { tokens } = await this.oauth2Client.getToken(code);
         await this.tokenManager.saveTokens(tokens);
-        res.send('Authentication successful! You can close this window.');
+        res.send("Authentication successful! You can close this window.");
         // Optionally stop the server after successful auth
-        // this.stop(); 
+        // this.stop();
       } catch (error: unknown) {
-        console.error('Error retrieving access token', error);
-        res.status(500).send('Authentication failed');
+        console.error("Error retrieving access token", error);
+        res.status(500).send("Authentication failed");
       }
     });
   }
 
   async start(startPort = 3000, endPort = 3004): Promise<boolean> {
     for (let port = startPort; port <= endPort; port++) {
-        try {
-            await new Promise<void>((resolve, reject) => {
-                this.server = this.app.listen(port, () => {
-                    console.error(`Auth server listening on http://localhost:${port}`);
-                    resolve();
-                });
-                this.server.on('error', (err: NodeJS.ErrnoException) => {
-                    if (err.code === 'EADDRINUSE') {
-                        console.error(`Port ${port} already in use, trying next...`);
-                        this.server?.close();
-                        reject(err);
-                    } else {
-                        console.error('Auth server error:', err);
-                        reject(err);
-                    }
-                });
-            });
-            return true;
-        } catch (error: unknown) {
-            if (!(error instanceof Error && 'code' in error && error.code === 'EADDRINUSE')) {
-                return false;
+      try {
+        await new Promise<void>((resolve, reject) => {
+          this.server = this.app.listen(port, () => {
+            console.error(`Auth server listening on http://localhost:${port}`);
+            resolve();
+          });
+          this.server.on("error", (err: NodeJS.ErrnoException) => {
+            if (err.code === "EADDRINUSE") {
+              console.error(`Port ${port} already in use, trying next...`);
+              this.server?.close();
+              reject(err);
+            } else {
+              console.error("Auth server error:", err);
+              reject(err);
             }
+          });
+        });
+        return true;
+      } catch (error: unknown) {
+        if (
+          !(
+            error instanceof Error &&
+            "code" in error &&
+            error.code === "EADDRINUSE"
+          )
+        ) {
+          return false;
         }
+      }
     }
-    console.error(`Failed to start auth server on ports ${startPort}-${endPort}.`);
+    console.error(
+      `Failed to start auth server on ports ${startPort}-${endPort}.`
+    );
     return false;
   }
 
   public getRunningPort(): number | null {
     if (this.server) {
-        const address = this.server.address();
-        if (typeof address === 'object' && address !== null) {
-            return address.port;
-        }
+      const address = this.server.address();
+      if (typeof address === "object" && address !== null) {
+        return address.port;
+      }
     }
     return null;
   }
@@ -105,4 +118,4 @@ export class AuthServer {
       }
     });
   }
-} 
+}
