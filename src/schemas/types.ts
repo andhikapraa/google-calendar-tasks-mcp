@@ -64,3 +64,55 @@ export interface Task {
   parent?: string | null;
   position?: string | null;
 }
+
+// Gmail Types
+
+export interface GmailMessage {
+  id: string;
+  threadId: string;
+  labelIds?: string[];
+  snippet?: string;
+  historyId?: string;
+  internalDate?: string;
+  payload?: {
+    partId?: string;
+    mimeType?: string;
+    filename?: string;
+    headers?: Array<{
+      name: string;
+      value: string;
+    }>;
+    body?: {
+      attachmentId?: string;
+      size?: number;
+      data?: string;
+    };
+    parts?: any[]; // This would be a more complex recursive structure
+  };
+  sizeEstimate?: number;
+  raw?: string;
+}
+
+export interface GmailThread {
+  id: string;
+  snippet?: string;
+  historyId?: string;
+  messages?: GmailMessage[];
+}
+
+export interface GmailLabel {
+  id: string;
+  name: string;
+  messageListVisibility?: string;
+  labelListVisibility?: string;
+  type?: string;
+  color?: {
+    textColor: string;
+    backgroundColor: string;
+  };
+}
+
+export interface GmailDraft {
+  id: string;
+  message: GmailMessage;
+}

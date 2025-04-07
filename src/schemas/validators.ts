@@ -135,3 +135,86 @@ export const DeleteTaskArgumentsSchema = z.object({
   taskListId: z.string(),
   taskId: z.string(),
 });
+
+// Gmail API schemas
+
+// Message schemas
+export const ListMessagesArgumentsSchema = z.object({
+  maxResults: z.number().optional(),
+  labelIds: z.array(z.string()).optional(),
+  query: z.string().optional(),
+});
+
+export const GetMessageArgumentsSchema = z.object({
+  messageId: z.string(),
+  format: z.enum(["minimal", "full", "raw", "metadata"]).optional(),
+});
+
+export const SendMessageArgumentsSchema = z.object({
+  to: z.string(),
+  subject: z.string(),
+  body: z.string(),
+  cc: z.string().optional(),
+  bcc: z.string().optional(),
+  htmlBody: z.boolean().optional(), // Whether the body is HTML
+});
+
+export const CreateDraftArgumentsSchema = z.object({
+  to: z.string(),
+  subject: z.string(),
+  body: z.string(),
+  cc: z.string().optional(),
+  bcc: z.string().optional(),
+  htmlBody: z.boolean().optional(),
+});
+
+export const UpdateDraftArgumentsSchema = z.object({
+  draftId: z.string(),
+  to: z.string().optional(),
+  subject: z.string().optional(),
+  body: z.string().optional(),
+  cc: z.string().optional(),
+  bcc: z.string().optional(),
+  htmlBody: z.boolean().optional(),
+});
+
+// Label schemas
+export const ListLabelsArgumentsSchema = z.object({});
+
+export const CreateLabelArgumentsSchema = z.object({
+  name: z.string(),
+  backgroundColor: z.string().optional(),
+  textColor: z.string().optional(),
+});
+
+export const ModifyLabelsArgumentsSchema = z.object({
+  messageId: z.string(),
+  addLabelIds: z.array(z.string()).optional(),
+  removeLabelIds: z.array(z.string()).optional(),
+});
+
+// Thread schemas
+export const ListThreadsArgumentsSchema = z.object({
+  maxResults: z.number().optional(),
+  labelIds: z.array(z.string()).optional(),
+  query: z.string().optional(),
+});
+
+export const GetThreadArgumentsSchema = z.object({
+  threadId: z.string(),
+  format: z.enum(["minimal", "full", "metadata"]).optional(),
+});
+
+// Message management schemas
+export const TrashMessageArgumentsSchema = z.object({
+  messageId: z.string(),
+});
+
+export const DeleteMessageArgumentsSchema = z.object({
+  messageId: z.string(),
+});
+
+export const MarkAsReadArgumentsSchema = z.object({
+  messageId: z.string(),
+  read: z.boolean(),
+});

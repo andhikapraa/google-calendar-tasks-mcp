@@ -1,6 +1,6 @@
-# Google Calendar and Tasks MCP Server
+# Google Calendar, Tasks, and Gmail MCP Server
 
-This is a Model Context Protocol (MCP) server that provides integration with Google Calendar and Google Tasks. It allows LLMs to read, create, update and search for calendar events as well as manage task lists and tasks through a standardized interface.
+This is a Model Context Protocol (MCP) server that provides integration with Google Calendar, Google Tasks, and Gmail. It allows LLMs to read, create, update and search for calendar events, manage task lists and tasks, and handle email operations through a standardized interface.
 
 ## Example Usage
 
@@ -64,18 +64,51 @@ With the Google Tasks integration, you can:
    Show me all incomplete tasks due this week
    ```
 
+## Gmail Capabilities
+
+With the Gmail integration, you can:
+
+1. Read and search emails:
+
+   ```
+   Find all emails from example@domain.com in the last week
+   ```
+
+2. Send emails:
+
+   ```
+   Send an email to john@example.com with subject "Meeting Tomorrow" and body "Let's discuss the project at 3 PM."
+   ```
+
+3. Create and manage drafts:
+
+   ```
+   Create a draft email to the team about the upcoming deadline
+   ```
+
+4. Organize with labels:
+
+   ```
+   Create a new label called "Important Projects" and apply it to all emails from my boss
+   ```
+
+5. Manage conversations:
+   ```
+   Mark all unread emails from newsletter@example.com as read
+   ```
+
 ## Requirements
 
 1. Node.js (Latest LTS recommended)
 2. TypeScript 5.3 or higher
-3. A Google Cloud project with the Calendar API and Tasks API enabled
+3. A Google Cloud project with the Calendar API, Tasks API, and Gmail API enabled
 4. OAuth 2.0 credentials (Client ID and Client Secret)
 
 ## Google Cloud Setup
 
 1. Go to the [Google Cloud Console](https://console.cloud.google.com)
 2. Create a new project or select an existing one.
-3. Enable the [Google Calendar API](https://console.cloud.google.com/apis/library/calendar-json.googleapis.com) and [Google Tasks API](https://console.cloud.google.com/apis/library/tasks.googleapis.com) for your project. Ensure that the right project is selected from the top bar before enabling the APIs.
+3. Enable the [Google Calendar API](https://console.cloud.google.com/apis/library/calendar-json.googleapis.com), [Google Tasks API](https://console.cloud.google.com/apis/library/tasks.googleapis.com), and [Gmail API](https://console.cloud.google.com/apis/library/gmail.googleapis.com) for your project. Ensure that the right project is selected from the top bar before enabling the APIs.
 4. Create OAuth 2.0 credentials:
    - Go to Credentials
    - Click "Create Credentials" > "OAuth client ID"
@@ -84,6 +117,7 @@ With the Google Tasks integration, you can:
    - Add the following scopes:
      - `https://www.googleapis.com/auth/calendar` (for Calendar access)
      - `https://www.googleapis.com/auth/tasks` (for Tasks access)
+     - `https://www.googleapis.com/auth/gmail.modify` (for Gmail access)
    - Select "Desktop app" as the application type
    - Add your email address as a test user under the [OAuth Consent screen](https://console.cloud.google.com/apis/credentials/consent)
      - Note: it will take a few minutes for the test user to be added. The OAuth consent will not allow you to proceed until the test user has propogated.
@@ -155,7 +189,7 @@ Tests mock external dependencies (Google API, filesystem) to ensure isolated tes
    ```json
    {
      "mcpServers": {
-       "google-calendar-tasks": {
+       "google-calendar-tasks-gmail": {
          "command": "node",
          "args": ["<absolute-path-to-project-folder>/build/index.js"]
        }

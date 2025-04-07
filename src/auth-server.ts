@@ -237,6 +237,7 @@ export class AuthServer {
         scope: [
           "https://www.googleapis.com/auth/calendar",
           "https://www.googleapis.com/auth/tasks", // Add Tasks API scope
+          "https://www.googleapis.com/auth/gmail.modify", // Add Gmail API scope
         ],
       });
 

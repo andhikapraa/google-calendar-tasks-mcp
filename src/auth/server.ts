@@ -22,6 +22,7 @@ export class AuthServer {
       const scopes = [
         "https://www.googleapis.com/auth/calendar",
         "https://www.googleapis.com/auth/tasks",
+        "https://www.googleapis.com/auth/gmail.modify",
       ];
       const authUrl = this.oauth2Client.generateAuthUrl({
         access_type: "offline",
@@ -29,7 +30,7 @@ export class AuthServer {
         prompt: "consent", // Force consent screen for refresh token
       });
       res.send(
-        `<h1>Google Calendar and Tasks Authentication</h1><a href="${authUrl}">Authenticate with Google</a>`
+        `<h1>Google Calendar, Tasks, and Gmail Authentication</h1><a href="${authUrl}">Authenticate with Google</a>`
       );
     });
 

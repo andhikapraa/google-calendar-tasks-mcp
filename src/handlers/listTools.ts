@@ -509,6 +509,273 @@ export function getToolDefinitions() {
           required: ["taskListId", "taskId"],
         },
       },
+      // Gmail API Tools
+      {
+        name: "list-messages",
+        description: "List messages (emails) from Gmail",
+        inputSchema: {
+          type: "object",
+          properties: {
+            maxResults: {
+              type: "number",
+              description:
+                "Maximum number of messages to return (default: 100)",
+            },
+            labelIds: {
+              type: "array",
+              items: {
+                type: "string",
+              },
+              description: "Only return messages with these labels",
+            },
+            query: {
+              type: "string",
+              description:
+                "Search query to filter messages (Gmail search syntax)",
+            },
+          },
+          required: [],
+        },
+      },
+      {
+        name: "get-message",
+        description: "Get a specific message (email) by ID",
+        inputSchema: {
+          type: "object",
+          properties: {
+            messageId: {
+              type: "string",
+              description: "ID of the message to retrieve",
+            },
+            format: {
+              type: "string",
+              enum: ["minimal", "full", "raw", "metadata"],
+              description: "Format of the message to return (default: full)",
+            },
+          },
+          required: ["messageId"],
+        },
+      },
+      {
+        name: "send-message",
+        description: "Send an email message",
+        inputSchema: {
+          type: "object",
+          properties: {
+            to: {
+              type: "string",
+              description: "Recipient email address(es), comma-separated",
+            },
+            subject: {
+              type: "string",
+              description: "Subject of the email",
+            },
+            body: {
+              type: "string",
+              description: "Body content of the email",
+            },
+            cc: {
+              type: "string",
+              description: "CC recipient(s), comma-separated (optional)",
+            },
+            bcc: {
+              type: "string",
+              description: "BCC recipient(s), comma-separated (optional)",
+            },
+            htmlBody: {
+              type: "boolean",
+              description: "Whether the body is HTML (default: false)",
+              default: false,
+            },
+          },
+          required: ["to", "subject", "body"],
+        },
+      },
+      {
+        name: "create-draft",
+        description: "Create a draft email",
+        inputSchema: {
+          type: "object",
+          properties: {
+            to: {
+              type: "string",
+              description: "Recipient email address(es), comma-separated",
+            },
+            subject: {
+              type: "string",
+              description: "Subject of the email",
+            },
+            body: {
+              type: "string",
+              description: "Body content of the email",
+            },
+            cc: {
+              type: "string",
+              description: "CC recipient(s), comma-separated (optional)",
+            },
+            bcc: {
+              type: "string",
+              description: "BCC recipient(s), comma-separated (optional)",
+            },
+            htmlBody: {
+              type: "boolean",
+              description: "Whether the body is HTML (default: false)",
+              default: false,
+            },
+          },
+          required: ["to", "subject", "body"],
+        },
+      },
+      {
+        name: "list-labels",
+        description: "List all labels in Gmail",
+        inputSchema: {
+          type: "object",
+          properties: {},
+          required: [],
+        },
+      },
+      {
+        name: "create-label",
+        description: "Create a new Gmail label",
+        inputSchema: {
+          type: "object",
+          properties: {
+            name: {
+              type: "string",
+              description: "Name of the label to create",
+            },
+            backgroundColor: {
+              type: "string",
+              description: "Background color in hex format (optional)",
+            },
+            textColor: {
+              type: "string",
+              description: "Text color in hex format (optional)",
+            },
+          },
+          required: ["name"],
+        },
+      },
+      {
+        name: "modify-labels",
+        description: "Add or remove labels from a message",
+        inputSchema: {
+          type: "object",
+          properties: {
+            messageId: {
+              type: "string",
+              description: "ID of the message to modify",
+            },
+            addLabelIds: {
+              type: "array",
+              items: {
+                type: "string",
+              },
+              description: "Labels to add to the message",
+            },
+            removeLabelIds: {
+              type: "array",
+              items: {
+                type: "string",
+              },
+              description: "Labels to remove from the message",
+            },
+          },
+          required: ["messageId"],
+        },
+      },
+      {
+        name: "list-threads",
+        description: "List email threads from Gmail",
+        inputSchema: {
+          type: "object",
+          properties: {
+            maxResults: {
+              type: "number",
+              description: "Maximum number of threads to return (default: 100)",
+            },
+            labelIds: {
+              type: "array",
+              items: {
+                type: "string",
+              },
+              description: "Only return threads with these labels",
+            },
+            query: {
+              type: "string",
+              description:
+                "Search query to filter threads (Gmail search syntax)",
+            },
+          },
+          required: [],
+        },
+      },
+      {
+        name: "get-thread",
+        description: "Get a specific email thread by ID",
+        inputSchema: {
+          type: "object",
+          properties: {
+            threadId: {
+              type: "string",
+              description: "ID of the thread to retrieve",
+            },
+            format: {
+              type: "string",
+              enum: ["minimal", "full", "metadata"],
+              description: "Format of the messages to return (default: full)",
+            },
+          },
+          required: ["threadId"],
+        },
+      },
+      {
+        name: "trash-message",
+        description: "Move a message to trash",
+        inputSchema: {
+          type: "object",
+          properties: {
+            messageId: {
+              type: "string",
+              description: "ID of the message to trash",
+            },
+          },
+          required: ["messageId"],
+        },
+      },
+      {
+        name: "delete-message",
+        description: "Permanently delete a message",
+        inputSchema: {
+          type: "object",
+          properties: {
+            messageId: {
+              type: "string",
+              description: "ID of the message to delete",
+            },
+          },
+          required: ["messageId"],
+        },
+      },
+      {
+        name: "mark-as-read",
+        description: "Mark a message as read or unread",
+        inputSchema: {
+          type: "object",
+          properties: {
+            messageId: {
+              type: "string",
+              description: "ID of the message to modify",
+            },
+            read: {
+              type: "boolean",
+              description: "Whether to mark as read (true) or unread (false)",
+            },
+          },
+          required: ["messageId", "read"],
+        },
+      },
     ],
   };
 }

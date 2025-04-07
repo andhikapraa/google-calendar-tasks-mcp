@@ -1,7 +1,7 @@
 {
   "name": "google-calendar-mcp",
-  "version": "1.2.0",
-  "description": "Google Calendar and Tasks MCP Server",
+  "version": "1.3.0",
+  "description": "Google Calendar, Tasks, and Gmail MCP Server",
   "type": "module",
   "bin": {
     "google-calendar-mcp": "./build/index.js"

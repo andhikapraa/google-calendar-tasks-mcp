@@ -20,8 +20,8 @@ import { handleCallTool } from "./handlers/callTool.js";
 // Create server instance (global for export)
 const server = new Server(
   {
-    name: "google-calendar-tasks",
-    version: "1.2.0",
+    name: "google-calendar-tasks-gmail",
+    version: "1.3.0",
   },
   {
     capabilities: {
